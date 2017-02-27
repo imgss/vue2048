@@ -20,6 +20,11 @@
 </script>
 
 <style scoped>
+    .title {
+        font-size: 2em;
+        margin: 5px;
+    }
+    
     .gamehead {
         display: flex;
         justify-content: space-between;
