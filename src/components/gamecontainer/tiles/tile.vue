@@ -38,5 +38,8 @@
         user-select: none;
         line-height: 120px;
         vertical-align: middle;
+        border-radius: 2px;
+        width: 23%;
+        height: 23%;
     }
 </style>

@@ -1,6 +1,6 @@
 <template>
-  <div class='tiles'>
-  <tile v-for='tile in tiles' class='tile' :tilenum="tile.number"></tile>
+  <div class='tiles' @keydown='move'>
+  <tile v-for='(tile,index) in tiles' class='tile' :tilenum="tile.number"></tile>
   </div>
 </template>
 
@@ -10,7 +10,21 @@
         data() {
             return {
                 tileslength: 16,
-                tiles: []
+                tiles: [],
+                map: {
+                    38: 0, // Up
+                    39: 1, // Right
+                    40: 2, // Down
+                    37: 3, // Left
+                    75: 0, // Vim up
+                    76: 1, // Vim right
+                    74: 2, // Vim down
+                    72: 3, // Vim left
+                    87: 0, // W
+                    68: 1, // D
+                    83: 2, // S
+                    65: 3 // A
+                }
             }
         },
         components: {
@@ -28,6 +42,14 @@
             }
             this.gameInit(4);
         },
+        mounted() {
+            var self = this;
+            document.addEventListener('keydown', function(e) {
+                var directioncode = self.map[e.which];
+                self.move(directioncode);
+            })
+
+        },
         methods: {
             gameInit(size) {
                 for (var i = 0; i < size; i++) {
@@ -36,19 +58,15 @@
                     this.tiles[position].number = this.randomNumber();
                 }
             },
-            randomTile() {
-                var tile = {};
-                tile.number = this.randomNumber();
-                tile.x = this.randomPosition();
-                tile.y = this.randomPosition();
-                return tile;
-
-            },
-            randomPosition() {
-                return Math.floor(4 * Math.random());
-            },
             randomNumber() {
                 return 2 + 2 * Math.round(Math.random());
+            },
+            getDirection() {
+
+            },
+            move(vector) {
+                console.log(vector);
+
             }
         }
 
@@ -63,10 +81,5 @@
         display: flex;
         justify-content: space-between;
         flex-wrap: wrap;
-    }
-    
-    .tile {
-        width: 24%;
-        height: 24%;
     }
 </style>

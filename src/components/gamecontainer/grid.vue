@@ -29,5 +29,6 @@
         width: 23%;
         height: 23%;
         background: rgba(238, 228, 218, 0.35);
+        border-radius: 2px;
     }
 </style>
