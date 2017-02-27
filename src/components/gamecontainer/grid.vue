@@ -18,16 +18,16 @@
 <style>
     .grid {
         position: absolute;
-        width: 98%;
-        height: 98%;
+        width: 95%;
+        height: 95%;
         display: flex;
         justify-content: space-between;
         flex-wrap: wrap;
     }
     
     .cell {
-        width: 24%;
-        height: 24%;
+        width: 23%;
+        height: 23%;
         background: rgba(238, 228, 218, 0.35);
     }
 </style>
