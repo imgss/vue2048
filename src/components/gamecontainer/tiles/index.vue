@@ -65,7 +65,6 @@
                 for (var i = 0; i < size; i++) {
                     var positionX = Math.floor(4 * Math.random());
                     var positionY = Math.floor(4 * Math.random());
-                    console.log(positionX, positionY);
                     this.tiles[positionX][positionY] = this.randomNumber();
                 }
             },
@@ -78,37 +77,65 @@
                     case 3: //move left
                         {
                             for (var x = 0; x < 4; x++) {
-                                newTiles.push(this.justmove(this.tiles[x]));
+                                newTiles.push(this.justmove(this.tiles[x], false));
                             }
                             //merge tile
                             this.tiles = newTiles;
+                            newTiles = [];
+                            //generate tile
+                            break;
                         }
                     case 2:
                         { //move down
+                            break;
+
+
 
                         }
                     case 1:
                         { //move right
+                            console.log('right');
+                            for (var i = 0; i < 4; i++) {
+                                console.log(this.tiles[i]);
+                                newTiles.push(this.justmove(this.tiles[i], true));
+                            }
+                            this.tiles = newTiles;
+                            newTiles = [];
+                            break;
+
+                            //generate tile
 
                         }
-                    case 2:
+                    case 0:
                         { //move top
+                            break;
 
                         }
 
                 }
 
             },
-            justmove(list) {
+            justmove(list, reverse) {
+
                 var length = list.length;
-                var n = 0;
+
+                var n = reverse ? length : 0;
                 var nList = new Array(length).fill(null);
-                for (var x = 0; x < list.length; x++) {
-                    if (list[x] !== null) {
-                        nList[n++] = list[x];
+                if (!reverse) {
+                    for (var x = 0; x < length; x++) {
+                        if (list[x] !== null) {
+                            nList[n++] = list[x];
+                        }
                     }
+                } else {
+                    for (var x = length; x > -1; x--) {
+                        if (list[x] !== null) {
+                            nList[n--] = list[x];
+                        }
+                    }
+
                 }
-                console.log(nList);
+
                 return nList;
             },
             getVector(code) {
