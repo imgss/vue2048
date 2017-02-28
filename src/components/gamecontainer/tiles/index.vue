@@ -1,6 +1,6 @@
 <template>
   <div class='tiles' @keydown='move'>
-  <tile v-for='(tile,index) in tiles' class='tile' :tilenum="tile.number"></tile>
+  <tile v-for='tilenum in tilesNumber' class='tile' :tilenum="tilenum"></tile>
   </div>
 </template>
 
@@ -27,17 +27,27 @@
                 }
             }
         },
+        computed: {
+            tilesNumber() {
+                var tilesNumber = [];
+                for (var x = 0; x < 4; x++) {
+                    for (var y = 0; y < 4; y++) {
+                        tilesNumber.push(this.tiles[x][y]);
+                    }
+                }
+                console.log(tilesNumber);
+                return tilesNumber;
+            }
+
+        },
         components: {
             tile
         },
         created() {
             for (var i = 0; i < 4; i++) {
+                this.tiles[i] = [];
                 for (var j = 0; j < 4; j++) {
-                    this.tiles.push({
-                        number: null,
-                        x: i,
-                        y: j
-                    });
+                    this.tiles[i][j] = null;
                 }
             }
             this.gameInit(4);
@@ -53,23 +63,75 @@
         methods: {
             gameInit(size) {
                 for (var i = 0; i < size; i++) {
-                    var position = Math.floor(15 * Math.random());
-                    console.log(position);
-                    this.tiles[position].number = this.randomNumber();
+                    var positionX = Math.floor(4 * Math.random());
+                    var positionY = Math.floor(4 * Math.random());
+                    console.log(positionX, positionY);
+                    this.tiles[positionX][positionY] = this.randomNumber();
                 }
             },
             randomNumber() {
                 return 2 + 2 * Math.round(Math.random());
             },
-            getDirection() {
+            move(code) {
+                var newTiles = [];
+                switch (code) {
+                    case 3: //move left
+                        {
+                            for (var x = 0; x < 4; x++) {
+                                newTiles.push(this.justmove(this.tiles[x]));
+                            }
+                            //merge tile
+                            this.tiles = newTiles;
+                        }
+                    case 2:
+                        { //move down
+
+                        }
+                    case 1:
+                        { //move right
+
+                        }
+                    case 2:
+                        { //move top
+
+                        }
+
+                }
 
             },
-            move(vector) {
-                console.log(vector);
-
+            justmove(list) {
+                var length = list.length;
+                var n = 0;
+                var nList = new Array(length).fill(null);
+                for (var x = 0; x < list.length; x++) {
+                    if (list[x] !== null) {
+                        nList[n++] = list[x];
+                    }
+                }
+                console.log(nList);
+                return nList;
+            },
+            getVector(code) {
+                var vList = [{
+                    str: 'top',
+                    x: 0,
+                    y: -1
+                }, {
+                    str: 'right',
+                    x: 1,
+                    y: 0
+                }, {
+                    str: 'down',
+                    x: 0,
+                    y: 1
+                }, {
+                    str: 'left',
+                    x: -1,
+                    y: 0
+                }];
+                return vList[code];
             }
         }
-
     }
 </script>
 

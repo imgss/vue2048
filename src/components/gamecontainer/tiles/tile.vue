@@ -1,5 +1,5 @@
 <template>
-    <div class='tile' :style="{backgroundColor:colormap[tilenum]}">{{tilenum}}</div>
+    <div class='tile' :style="{backgroundColor:colormap[tilenum]}" >{{tilenum}}</div>
 </template>
 
 <script>
