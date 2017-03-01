@@ -1,6 +1,6 @@
 <template>
   <div class='tiles' @keydown='move'>
-  <tile v-for='tilenum in tilesNumber' class='tile' :tilenum="tilenum"></tile>
+  <tile v-for='tilenum in tilesNumber' class='tile' :tilenum="tilenum" :from='-2'></tile>
   </div>
 </template>
 
@@ -81,8 +81,6 @@
                                 newTiles.push(this.justmove(this.tiles[x], false));
                             }
                             //merge tile
-                            this.tiles = newTiles;
-                            newTiles = [];
                             //generate tile
                             break;
                         }
@@ -107,8 +105,7 @@
                                 newTiles.push(row);
 
                             }
-                            this.tiles = newTiles;
-                            newTiles = [];
+
                             break;
                         }
                     case 1:
@@ -117,8 +114,6 @@
                             for (var i = 0; i < 4; i++) {
                                 newTiles.push(this.justmove(this.tiles[i], true));
                             }
-                            this.tiles = newTiles;
-                            newTiles = [];
                             break;
 
                             //generate tile
@@ -144,18 +139,18 @@
                                 newTiles.push(row);
 
                             }
-                            this.tiles = newTiles;
-                            newTiles = [];
                             break;
 
                         }
 
                 }
-
+                this.tiles = newTiles;
+                console.log(newTiles);
+                newTiles = [];
             },
             justmove(list, reverse) {
 
-                var length = list.length;
+                var length = 4; //写成list.length会出现length成为5的bug
 
                 var n = reverse ? length : 0;
                 var nList = new Array(length).fill(null);
