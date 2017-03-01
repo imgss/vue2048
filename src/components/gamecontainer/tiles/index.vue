@@ -73,6 +73,7 @@
             },
             move(code) {
                 var newTiles = [];
+                var newColumnTiles = [];
                 switch (code) {
                     case 3: //move left
                         {
@@ -87,16 +88,33 @@
                         }
                     case 2:
                         { //move down
+                            for (var y = 0; y < 4; y++) {
+                                var column = [];
+                                for (var x = 0; x < 4; x++) {
+                                    column.push(this.tiles[x][y]);
+
+                                }
+                                newColumnTiles.push(this.justmove(column, true));
+
+                            }
+
+                            for (var ny = 0; ny < 4; ny++) {
+                                let row = [];
+                                for (var nx = 0; nx < 4; nx++) {
+
+                                    row.push(newColumnTiles[nx][ny])
+                                }
+                                newTiles.push(row);
+
+                            }
+                            this.tiles = newTiles;
+                            newTiles = [];
                             break;
-
-
-
                         }
                     case 1:
                         { //move right
                             console.log('right');
                             for (var i = 0; i < 4; i++) {
-                                console.log(this.tiles[i]);
                                 newTiles.push(this.justmove(this.tiles[i], true));
                             }
                             this.tiles = newTiles;
@@ -108,6 +126,26 @@
                         }
                     case 0:
                         { //move top
+                            for (var y = 0; y < 4; y++) {
+                                var column = [];
+                                for (var x = 0; x < 4; x++) {
+                                    column.push(this.tiles[x][y]);
+
+                                }
+                                newColumnTiles.push(this.justmove(column, false));
+
+                            }
+
+                            for (var ny = 0; ny < 4; ny++) {
+                                let row = [];
+                                for (var nx = 0; nx < 4; nx++) {
+                                    row.push(newColumnTiles[nx][ny])
+                                }
+                                newTiles.push(row);
+
+                            }
+                            this.tiles = newTiles;
+                            newTiles = [];
                             break;
 
                         }
