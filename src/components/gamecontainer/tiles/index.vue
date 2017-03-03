@@ -80,7 +80,7 @@
                             for (var x = 0; x < 4; x++) {
                                 newTiles.push(this.justmove(this.tiles[x], false));
                             }
-                            //merge tile
+                            this.merge(newTiles);
                             //generate tile
                             break;
                         }
@@ -93,7 +93,7 @@
 
                                 }
                                 newColumnTiles.push(this.justmove(column, true));
-
+                                this.merge(newColumnTiles);
                             }
 
                             for (var ny = 0; ny < 4; ny++) {
@@ -103,17 +103,15 @@
                                     row.push(newColumnTiles[nx][ny])
                                 }
                                 newTiles.push(row);
-
                             }
-
                             break;
                         }
                     case 1:
                         { //move right
-                            console.log('right');
                             for (var i = 0; i < 4; i++) {
                                 newTiles.push(this.justmove(this.tiles[i], true));
                             }
+                            this.merge(newTiles);
                             break;
 
                             //generate tile
@@ -128,6 +126,7 @@
 
                                 }
                                 newColumnTiles.push(this.justmove(column, false));
+                                this.merge(newColumnTiles);
 
                             }
 
@@ -145,6 +144,7 @@
 
                 }
                 this.tiles = newTiles;
+                this.$nextTick(this.generateNewTile());
                 console.log(newTiles);
                 newTiles = [];
             },
@@ -170,6 +170,34 @@
                 }
 
                 return nList;
+            },
+            merge(nlist) {
+                for(let row of nlist){
+                    for(var n=0;n<3;n++){
+                        if(row[n]==null){
+                            continue;
+                        }
+                        if(row[n]==row[n+1]){
+                            row[n]=null;
+                            row[n+1]*=2;
+                            break;
+                        }
+                    }
+                }
+            },
+            generateNewTile(){
+                var randomPosition=parseInt(15*Math.random());
+                var row=parseInt(randomPosition/4);
+                var column=randomPosition%4;
+                while(!this.tiles[row][column]){
+                    randomPosition=parseInt(15*Math.random());
+                     row=parseInt(randomPosition/4);
+                column=randomPosition%4;
+
+                }
+                
+                    this.tiles[row][column]=Math.random()>0.5?2:4;
+                    console.log("new tile is %s at %s,%s",this.tiles[row][column],row,column);
             },
             getVector(code) {
                 var vList = [{
