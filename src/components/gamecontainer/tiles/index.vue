@@ -35,7 +35,7 @@
                         tilesNumber.push(this.tiles[x][y]);
                     }
                 }
-                console.log(tilesNumber);
+                //console.log(tilesNumber);
                 return tilesNumber;
             }
 
@@ -80,6 +80,8 @@
                             for (var x = 0; x < 4; x++) {
                                 newTiles.push(this.justmove(this.tiles[x], false));
                             }
+                            // console.log("left");
+                            // console.log(newTiles);
                             this.merge(newTiles);
                             //generate tile
                             break;
@@ -104,6 +106,8 @@
                                 }
                                 newTiles.push(row);
                             }
+                            // console.log("down");
+                            // console.log(newTiles);
                             break;
                         }
                     case 1:
@@ -111,7 +115,10 @@
                             for (var i = 0; i < 4; i++) {
                                 newTiles.push(this.justmove(this.tiles[i], true));
                             }
+                            // console.log("right");
+                            // console.log(newTiles);
                             this.merge(newTiles);
+
                             break;
 
                             //generate tile
@@ -136,6 +143,8 @@
                                     row.push(newColumnTiles[nx][ny])
                                 }
                                 newTiles.push(row);
+                            // console.log("top");
+                            // console.log(newTiles);
 
                             }
                             break;
@@ -143,16 +152,19 @@
                         }
 
                 }
+                
                 this.tiles = newTiles;
-                this.$nextTick(this.generateNewTile());
-                console.log(newTiles);
+                //console.log(this.tiles);
+                //this.generateNewTile();
+                //console.log(this.tiles );
                 newTiles = [];
             },
-            justmove(list, reverse) {
+            justmove(list, reverse=false) {
+                console.log(list);
 
                 var length = 4; //写成list.length会出现length成为5的bug
 
-                var n = reverse ? length : 0;
+                var n = reverse ? length-1 : 0;
                 var nList = new Array(length).fill(null);
                 if (!reverse) {
                     for (var x = 0; x < length; x++) {
@@ -161,14 +173,15 @@
                         }
                     }
                 } else {
-                    for (var x = length; x > -1; x--) {
+                    for (var x = length-1; x > -1; x--) {
                         if (list[x] !== null) {
                             nList[n--] = list[x];
                         }
                     }
 
                 }
-
+                console.log("------>")
+console.log(nList);
                 return nList;
             },
             merge(nlist) {
@@ -185,7 +198,7 @@
                     }
                 }
             },
-            generateNewTile(){
+            generateNewTile(){//生成新数字
                 var randomPosition=parseInt(15*Math.random());
                 var row=parseInt(randomPosition/4);
                 var column=randomPosition%4;
@@ -195,29 +208,9 @@
                 column=randomPosition%4;
 
                 }
-                
+                //console.log(this.tiles);
                     this.tiles[row][column]=Math.random()>0.5?2:4;
-                    console.log("new tile is %s at %s,%s",this.tiles[row][column],row,column);
-            },
-            getVector(code) {
-                var vList = [{
-                    str: 'top',
-                    x: 0,
-                    y: -1
-                }, {
-                    str: 'right',
-                    x: 1,
-                    y: 0
-                }, {
-                    str: 'down',
-                    x: 0,
-                    y: 1
-                }, {
-                    str: 'left',
-                    x: -1,
-                    y: 0
-                }];
-                return vList[code];
+//console.log(this.tiles);
             }
         }
     }
