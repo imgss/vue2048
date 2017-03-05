@@ -1,6 +1,6 @@
 # vue2048
 
-> ‘2048 game on vue'
+> 原版 [2048](https://github.com/gabrielecirulli/2048),利用vue2.0写的山寨版，算不上高仿。。
 
 ### 更新记录
 
