@@ -62,7 +62,7 @@
         },
         beforeUpdate(){
 
-            //this.generateNewTile();
+            this.generateNewTile();
 
         },
     
@@ -185,16 +185,14 @@
                 return nList;
             },
             generateNewTile(){//生成新数字
-                var randomPosition=parseInt(15*Math.random());
-                var row=parseInt(randomPosition/4);
-                var column=randomPosition%4;
-                while(!this.tiles[row][column]){
-                    randomPosition=parseInt(15*Math.random());
-                     row=parseInt(randomPosition/4);
-                column=randomPosition%4;
+                var row,column;
+                do{
+                    row=Math.floor(4*Math.random());
+                    column=Math.floor(4*Math.random());   
 
                 }
-                    this.tiles[row][column]=Math.random()>0.5?2:4;
+                while(this.tiles[row][column]!==null);
+                this.tiles[row][column]=Math.random()>0.5?2:4;
                 console.log(this.tiles[row][column],row,column);
             }
         }
