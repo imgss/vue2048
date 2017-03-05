@@ -8,9 +8,6 @@
     import grid from './grid'
     import tiles from './tiles'
     export default {
-        data() {
-            return {}
-        },
         components: {
             grid,
             tiles

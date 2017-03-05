@@ -1,6 +1,18 @@
 # vue2048
 
-> ‘2048 game by vue'
+> ‘2048 game on vue'
+
+## 更新记录
+
+* 2017-3-3 完成基本的合并，加分操作
+
+## todo
+
+1. 增加动画过渡
+
+2. localstorge记录最高分
+
+3. 重新开始，gameover的弹出层
 
 ## Build Setup
 
@@ -10,12 +22,3 @@ npm install
 
 # serve with hot reload at localhost:8080
 npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-```
-
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).

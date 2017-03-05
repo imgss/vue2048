@@ -12,10 +12,14 @@
     export default {
         data() {
             return {
-                score: 0,
                 bestscore: 0
             }
-        }
+        },
+         computed: {
+    score () {
+      return this.$store.state.score
+    }
+  }
     };
 </script>
 

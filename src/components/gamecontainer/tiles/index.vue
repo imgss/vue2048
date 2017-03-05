@@ -11,6 +11,8 @@
             return {
                 tileslength: 16,
                 tiles: [],
+                over:false,
+                score:0,
                 map: {
                     38: 0, // Up
                     39: 1, // Right
@@ -26,19 +28,6 @@
                     65: 3 // A
                 }
             }
-        },
-        computed: {
-            tilesNumber() {
-                var tilesNumber = [];
-                for (var x = 0; x < 4; x++) {
-                    for (var y = 0; y < 4; y++) {
-                        tilesNumber.push(this.tiles[x][y]);
-                    }
-                }
-                //console.log(tilesNumber);
-                return tilesNumber;
-            }
-
         },
         components: {
            row
@@ -152,7 +141,7 @@
             },
             moveAndMerge(list, reverse=false) {
 
-                var length = 4; //写成list.length会出现length成为5的bug
+                var length = 4;
 
                 var n = reverse ? length-1 : 0;
                 var nList = new Array(length).fill(null);
@@ -161,17 +150,19 @@
                         if (list[x] !== null) {
                             if(list[x]==nList[n-1]){
                                 nList[n-1] *=2 ;
+                                this.$store.commit("addScore",nList[n-1]);
                             }
                             else{
                             nList[n++] = list[x];}
                         }
-                    }//把非null的tile紧密排列
+                    }//把非null的tile紧密排列,合并
 
                 } else {
                     for (var x = length-1; x > -1; x--) {
                         if (list[x] !== null) {
                              if(list[x]==nList[n+1]){
                                 nList[n+1] *=2 ;
+                                this.$store.commit("addScore",nList[n+1]);
                             }
                             else{
                             nList[n--] = list[x];
@@ -180,12 +171,18 @@
                     }
 
                 }
-                //console.log("------>")
-                //console.log(nList);
                 return nList;
             },
             generateNewTile(){//生成新数字
-                var row,column;
+            var row,column;
+            function haveSpace(tiles){
+                return tiles.some(function(row){
+                   return row.some(function(tile){
+                       return tile==null;
+                    })
+                })
+            };
+                if(haveSpace(this.tiles)){
                 do{
                     row=Math.floor(4*Math.random());
                     column=Math.floor(4*Math.random());   
@@ -193,9 +190,11 @@
                 }
                 while(this.tiles[row][column]!==null);
                 this.tiles[row][column]=Math.random()>0.5?2:4;
-                console.log(this.tiles[row][column],row,column);
+            }else{
+                this.over=true;
             }
         }
+    }
     }
 </script>
 
