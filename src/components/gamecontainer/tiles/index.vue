@@ -1,11 +1,11 @@
 <template>
   <div class='tiles' @keydown='move'>
-  <tile v-for='tilenum in tilesNumber' class='tile' :tilenum="tilenum" :from='-2'></tile>
+  <row v-for='row in tiles' class='row' :row="row" :from='-2'></row>
   </div>
 </template>
 
 <script>
-    import tile from './tile'
+    import row from './row'
     export default {
         data() {
             return {
@@ -41,7 +41,7 @@
 
         },
         components: {
-            tile
+           row
         },
         created() {
             for (var i = 0; i < 4; i++) {
@@ -60,6 +60,12 @@
             })
 
         },
+        beforeUpdate(){
+
+            //this.generateNewTile();
+
+        },
+    
         methods: {
             gameInit(size) {
                 for (var i = 0; i < size; i++) {
@@ -71,19 +77,15 @@
             randomNumber() {
                 return 2 + 2 * Math.round(Math.random());
             },
-            move(code) {
+            move(directionCode) {
                 var newTiles = [];
                 var newColumnTiles = [];
-                switch (code) {
+                switch (directionCode) {
                     case 3: //move left
                         {
                             for (var x = 0; x < 4; x++) {
-                                newTiles.push(this.justmove(this.tiles[x], false));
+                                newTiles.push(this.moveAndMerge(this.tiles[x], false));
                             }
-                            // console.log("left");
-                            // console.log(newTiles);
-                            this.merge(newTiles);
-                            //generate tile
                             break;
                         }
                     case 2:
@@ -94,8 +96,7 @@
                                     column.push(this.tiles[x][y]);
 
                                 }
-                                newColumnTiles.push(this.justmove(column, true));
-                                this.merge(newColumnTiles);
+                                newColumnTiles.push(this.moveAndMerge(column, true));
                             }
 
                             for (var ny = 0; ny < 4; ny++) {
@@ -113,11 +114,8 @@
                     case 1:
                         { //move right
                             for (var i = 0; i < 4; i++) {
-                                newTiles.push(this.justmove(this.tiles[i], true));
+                                newTiles.push(this.moveAndMerge(this.tiles[i], true));
                             }
-                            // console.log("right");
-                            // console.log(newTiles);
-                            this.merge(newTiles);
 
                             break;
 
@@ -130,10 +128,8 @@
                                 var column = [];
                                 for (var x = 0; x < 4; x++) {
                                     column.push(this.tiles[x][y]);
-
                                 }
-                                newColumnTiles.push(this.justmove(column, false));
-                                this.merge(newColumnTiles);
+                                newColumnTiles.push(this.moveAndMerge(column, false));
 
                             }
 
@@ -143,8 +139,6 @@
                                     row.push(newColumnTiles[nx][ny])
                                 }
                                 newTiles.push(row);
-                            // console.log("top");
-                            // console.log(newTiles);
 
                             }
                             break;
@@ -154,13 +148,9 @@
                 }
                 
                 this.tiles = newTiles;
-                //console.log(this.tiles);
-                //this.generateNewTile();
-                //console.log(this.tiles );
                 newTiles = [];
             },
-            justmove(list, reverse=false) {
-                console.log(list);
+            moveAndMerge(list, reverse=false) {
 
                 var length = 4; //写成list.length会出现length成为5的bug
 
@@ -169,34 +159,30 @@
                 if (!reverse) {
                     for (var x = 0; x < length; x++) {
                         if (list[x] !== null) {
-                            nList[n++] = list[x];
+                            if(list[x]==nList[n-1]){
+                                nList[n-1] *=2 ;
+                            }
+                            else{
+                            nList[n++] = list[x];}
                         }
-                    }
+                    }//把非null的tile紧密排列
+
                 } else {
                     for (var x = length-1; x > -1; x--) {
                         if (list[x] !== null) {
+                             if(list[x]==nList[n+1]){
+                                nList[n+1] *=2 ;
+                            }
+                            else{
                             nList[n--] = list[x];
+                            }
                         }
                     }
 
                 }
-                console.log("------>")
-console.log(nList);
+                //console.log("------>")
+                //console.log(nList);
                 return nList;
-            },
-            merge(nlist) {
-                for(let row of nlist){
-                    for(var n=0;n<3;n++){
-                        if(row[n]==null){
-                            continue;
-                        }
-                        if(row[n]==row[n+1]){
-                            row[n]=null;
-                            row[n+1]*=2;
-                            break;
-                        }
-                    }
-                }
             },
             generateNewTile(){//生成新数字
                 var randomPosition=parseInt(15*Math.random());
@@ -208,9 +194,8 @@ console.log(nList);
                 column=randomPosition%4;
 
                 }
-                //console.log(this.tiles);
                     this.tiles[row][column]=Math.random()>0.5?2:4;
-//console.log(this.tiles);
+                console.log(this.tiles[row][column],row,column);
             }
         }
     }

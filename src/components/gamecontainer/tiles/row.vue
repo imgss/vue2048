@@ -1,5 +1,7 @@
 <template>
-    <div class='tile' :style="{backgroundColor:colormap[tilenum],transition:'all 0.3s ease'}" >{{tilenum}}</div>
+<div>
+    <div class='tile' v-for="tile in row" :style="{backgroundColor:colormap[tile],transition:'all 0.3s ease'}" >{{tile}}</div>
+</div>
 </template>
 
 <script>
@@ -24,13 +26,19 @@
             }
         },
         props: {
-            tilenum: null
+            row: null
         }
 
     }
 </script>
 
 <style>
+.row{
+    display:flex;
+    width:100%;
+    height:23%;
+    justify-content:space-between;
+}
     .tile {
         font-size: 3rem;
         color: #f9f6f2;
@@ -40,6 +48,6 @@
         vertical-align: middle;
         border-radius: 2px;
         width: 23%;
-        height: 23%;
+        height: 100%;
     }
 </style>
