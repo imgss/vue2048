@@ -2,11 +2,15 @@
 
 > ‘2048 game on vue'
 
-## 更新记录
+### 更新记录
 
 * 2017-3-3 完成基本的合并，加分操作
 
-## todo
+### bug
+
+
+
+### todo
 
 1. 增加动画过渡
 
@@ -14,7 +18,7 @@
 
 3. 重新开始，gameover的弹出层
 
-## Build Setup
+### Build Setup
 
 ``` bash
 # install dependencies

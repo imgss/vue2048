@@ -11,6 +11,7 @@
             return {
                 tileslength: 16,
                 tiles: [],
+                moved:false,
                 over:false,
                 score:0,
                 map: {
@@ -50,8 +51,10 @@
 
         },
         beforeUpdate(){
-
+            if(this.moved && !this.over){
             this.generateNewTile();
+            this.moved=false;
+            }
 
         },
     
@@ -134,6 +137,13 @@
 
                         }
 
+                }
+                for(var x=0;x<4;x++){
+                    for(var y=0;y<4;y++){
+                        if (newTiles[x][y]!==this.tiles[x][y]){
+                        this.moved=true;//方块移动了
+                        }
+                    }
                 }
                 
                 this.tiles = newTiles;

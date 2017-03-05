@@ -1,6 +1,6 @@
 <template>
 <div>
-    <div class='tile' v-for="tile in row" :style="{backgroundColor:colormap[tile],transition:'all 0.3s ease'}" >{{tile}}</div>
+    <div class='tile' v-for="tile in row" :style="{backgroundColor:colormap[tile] ,color: tile>4?'#f9f6f2':'#333'}" >{{tile}}</div>
 </div>
 </template>
 
@@ -41,6 +41,7 @@
 }
     .tile {
         font-size: 3rem;
+        transition:all 0.3s ease;
         color: #f9f6f2;
         text-align: center;
         user-select: none;
