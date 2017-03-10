@@ -1,6 +1,8 @@
 <template>
 <div>
+    
     <div class='tile' v-for="tile in row" :style="{backgroundColor:colormap[tile] ,color: tile>4?'#f9f6f2':'#333'}" >{{tile}}</div>
+    
 </div>
 </template>
 
@@ -33,15 +35,16 @@
 </script>
 
 <style>
-.row{
-    display:flex;
-    width:100%;
-    height:23%;
-    justify-content:space-between;
-}
+    .row {
+        display: flex;
+        width: 100%;
+        height: 23%;
+        justify-content: space-between;
+    }
+    
     .tile {
         font-size: 3rem;
-        transition:all 0.3s ease;
+        transition: all 0.3s ease;
         color: #f9f6f2;
         text-align: center;
         user-select: none;
@@ -50,5 +53,19 @@
         border-radius: 2px;
         width: 23%;
         height: 100%;
+    }
+    
+    .slide-fade-enter-active {
+        transition: all .3s ease;
+    }
+    
+    .slide-fade-leave-active {
+        transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    }
+    
+    .slide-fade-enter,
+    .slide-fade-leave-active {
+        transform: translateX(10px);
+        opacity: 0;
     }
 </style>

@@ -11,9 +11,9 @@
             return {
                 tileslength: 16,
                 tiles: [],
-                moved:false,
-                over:false,
-                score:0,
+                moved: false,
+                over: false,
+                score: 0,
                 map: {
                     38: 0, // Up
                     39: 1, // Right
@@ -31,7 +31,7 @@
             }
         },
         components: {
-           row
+            row
         },
         created() {
             for (var i = 0; i < 4; i++) {
@@ -50,14 +50,16 @@
             })
 
         },
-        beforeUpdate(){
-            if(this.moved && !this.over){
-            this.generateNewTile();
-            this.moved=false;
+        beforeUpdate() {
+            if (this.moved && !this.over) {
+                this.generateNewTile();
+                var that = this;
+                setTimeout(that.$forceUpdate, 2000);
+                this.moved = false;
             }
 
         },
-    
+
         methods: {
             gameInit(size) {
                 for (var i = 0; i < size; i++) {
@@ -75,14 +77,14 @@
                 switch (directionCode) {
                     case 3: //move left
                         {
-                            for (var x = 0; x < 4; x++) {
+                            for (let x = 0; x < 4; x++) {
                                 newTiles.push(this.moveAndMerge(this.tiles[x], false));
                             }
                             break;
                         }
                     case 2:
                         { //move down
-                            for (var y = 0; y < 4; y++) {
+                            for (let y = 0; y < 4; y++) {
                                 var column = [];
                                 for (var x = 0; x < 4; x++) {
                                     column.push(this.tiles[x][y]);
@@ -91,7 +93,7 @@
                                 newColumnTiles.push(this.moveAndMerge(column, true));
                             }
 
-                            for (var ny = 0; ny < 4; ny++) {
+                            for (let ny = 0; ny < 4; ny++) {
                                 let row = [];
                                 for (var nx = 0; nx < 4; nx++) {
 
@@ -105,7 +107,7 @@
                         }
                     case 1:
                         { //move right
-                            for (var i = 0; i < 4; i++) {
+                            for (let i = 0; i < 4; i++) {
                                 newTiles.push(this.moveAndMerge(this.tiles[i], true));
                             }
 
@@ -116,7 +118,7 @@
                         }
                     case 0:
                         { //move top
-                            for (var y = 0; y < 4; y++) {
+                            for (let y = 0; y < 4; y++) {
                                 var column = [];
                                 for (var x = 0; x < 4; x++) {
                                     column.push(this.tiles[x][y]);
@@ -125,9 +127,9 @@
 
                             }
 
-                            for (var ny = 0; ny < 4; ny++) {
+                            for (let ny = 0; ny < 4; ny++) {
                                 let row = [];
-                                for (var nx = 0; nx < 4; nx++) {
+                                for (let nx = 0; nx < 4; nx++) {
                                     row.push(newColumnTiles[nx][ny])
                                 }
                                 newTiles.push(row);
@@ -138,44 +140,44 @@
                         }
 
                 }
-                for(var x=0;x<4;x++){
-                    for(var y=0;y<4;y++){
-                        if (newTiles[x][y]!==this.tiles[x][y]){
-                        this.moved=true;//方块移动了
+                for (let x = 0; x < 4; x++) {
+                    for (let y = 0; y < 4; y++) {
+                        if (newTiles[x][y] !== this.tiles[x][y]) {
+                            this.moved = true; //方块移动了
                         }
                     }
                 }
-                
+
                 this.tiles = newTiles;
                 newTiles = [];
             },
-            moveAndMerge(list, reverse=false) {
+            moveAndMerge(list, reverse = false) {
 
                 var length = 4;
 
-                var n = reverse ? length-1 : 0;
+                var n = reverse ? length - 1 : 0;
                 var nList = new Array(length).fill(null);
                 if (!reverse) {
                     for (var x = 0; x < length; x++) {
                         if (list[x] !== null) {
-                            if(list[x]==nList[n-1]){
-                                nList[n-1] *=2 ;
-                                this.$store.commit("addScore",nList[n-1]);
+                            if (list[x] == nList[n - 1]) {
+                                nList[n - 1] *= 2;
+                                this.$store.commit("addScore", nList[n - 1]);
+                                break;
+                            } else {
+                                nList[n++] = list[x];
                             }
-                            else{
-                            nList[n++] = list[x];}
                         }
-                    }//把非null的tile紧密排列,合并
+                    } //把非null的tile紧密排列,合并
 
                 } else {
-                    for (var x = length-1; x > -1; x--) {
+                    for (var x = length - 1; x > -1; x--) {
                         if (list[x] !== null) {
-                             if(list[x]==nList[n+1]){
-                                nList[n+1] *=2 ;
-                                this.$store.commit("addScore",nList[n+1]);
-                            }
-                            else{
-                            nList[n--] = list[x];
+                            if (list[x] == nList[n + 1]) {
+                                nList[n + 1] *= 2;
+                                this.$store.commit("addScore", nList[n + 1]);
+                            } else {
+                                nList[n--] = list[x];
                             }
                         }
                     }
@@ -183,28 +185,29 @@
                 }
                 return nList;
             },
-            generateNewTile(){//生成新数字
-            var row,column;
-            function haveSpace(tiles){
-                return tiles.some(function(row){
-                   return row.some(function(tile){
-                       return tile==null;
-                    })
-                })
-            };
-                if(haveSpace(this.tiles)){
-                do{
-                    row=Math.floor(4*Math.random());
-                    column=Math.floor(4*Math.random());   
+            generateNewTile() { //生成新数字
+                var row, column;
 
+                function haveSpace(tiles) {
+                    return tiles.some(function(row) {
+                        return row.some(function(tile) {
+                            return tile == null;
+                        })
+                    })
+                };
+                if (haveSpace(this.tiles)) {
+                    do {
+                        row = Math.floor(4 * Math.random());
+                        column = Math.floor(4 * Math.random());
+
+                    }
+                    while (this.tiles[row][column] !== null);
+                    this.tiles[row][column] = Math.random() > 0.5 ? 2 : 4;
+                } else {
+                    this.over = true;
                 }
-                while(this.tiles[row][column]!==null);
-                this.tiles[row][column]=Math.random()>0.5?2:4;
-            }else{
-                this.over=true;
             }
         }
-    }
     }
 </script>
 
