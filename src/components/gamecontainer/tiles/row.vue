@@ -1,7 +1,14 @@
 <template>
 <div>
-    
-    <div class='tile' v-for="tile in row" :style="{backgroundColor:colormap[tile] ,color: tile>4?'#f9f6f2':'#333'}" >{{tile}}</div>
+    <!-- 通过新添加的tile是string类型来触发动画😂 -->
+    <div 
+    class='tile' 
+    :class="{'new': typeof tile === 'string'}" 
+    v-for="(tile,index) in row" 
+    :key="index" 
+    :style="{backgroundColor:colormap[tile] ,color: tile>4?'#f9f6f2':'#333'}" >
+    {{tile ? tile : ''}}
+    </div>
     
 </div>
 </template>

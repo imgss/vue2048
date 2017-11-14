@@ -1,6 +1,6 @@
 <template>
   <div class='tiles' @keydown='move'>
-  <row v-for='row in tiles' class='row' :row="row" :from='-2'></row>
+  <row v-for='(row,index) in tiles' :key="index" class='row' :row="row" :from='-2'></row>
   </div>
 </template>
 
@@ -13,7 +13,6 @@
                 tiles: [],
                 moved: false,
                 over: false,
-                score: 0,
                 map: {
                     38: 0, // Up
                     39: 1, // Right
@@ -142,7 +141,7 @@
                 }
                 for (let x = 0; x < 4; x++) {
                     for (let y = 0; y < 4; y++) {
-                        if (newTiles[x][y] !== this.tiles[x][y]) {
+                        if (newTiles[x][y] != this.tiles[x][y]) {
                             this.moved = true; //方块移动了
                         }
                     }
@@ -160,12 +159,12 @@
                 if (!reverse) {
                     for (var x = 0; x < length; x++) {
                         if (list[x] !== null) {
-                            if (list[x] == nList[n - 1]) {
+                            if (+list[x] == +nList[n - 1]) {
                                 nList[n - 1] *= 2;
                                 this.$store.commit("addScore", nList[n - 1]);
                                 break;
                             } else {
-                                nList[n++] = list[x];
+                                nList[n++] = +list[x];//把新的字符串变成数字，防止触发动画
                             }
                         }
                     } //把非null的tile紧密排列,合并
@@ -173,11 +172,11 @@
                 } else {
                     for (var x = length - 1; x > -1; x--) {
                         if (list[x] !== null) {
-                            if (list[x] == nList[n + 1]) {
+                            if (list[x] == nList[n + 1]) {//合并动作
                                 nList[n + 1] *= 2;
                                 this.$store.commit("addScore", nList[n + 1]);
                             } else {
-                                nList[n--] = list[x];
+                                nList[n--] = +list[x];
                             }
                         }
                     }
@@ -202,10 +201,15 @@
 
                     }
                     while (this.tiles[row][column] !== null);
-                    this.tiles[row][column] = Math.random() > 0.5 ? 2 : 4;
+                    this.tiles[row][column] = Math.random() > 0.5 ? '2' : '4';//添加string
                 } else {
                     this.over = true;
                 }
+            }
+        },
+        watch:{
+            over(){
+                alert('哈哈，挂了吧')
             }
         }
     }

@@ -1,6 +1,6 @@
 <template>
   <div class='grid'>
-      <div v-for="cell in cells" class='cell'></div>
+      <div v-for="cell in cells" :key="cell" class='cell'></div>
   </div>
 </template>
 
