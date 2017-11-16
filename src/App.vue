@@ -6,7 +6,6 @@
 </template>
 
 <script>
-    import '@/assets/main.css'
     import gamehead from "./components/gamehead"
     import gamecontainer from "./components/gamecontainer"
     export default {

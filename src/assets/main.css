@@ -4,14 +4,30 @@
     animation-fill-mode: forwards;
     animation-delay: 0.15s;
     transform: scale(0);
+}
+.tile.merged {
+  animation-duration: 0.10s;
+  animation-name: mergedTile;
+  animation-fill-mode: forwards;
+  animation-delay: 0.15s;
+  transform: scale(1.2);
+}
+  
+@keyframes newTile {
+  from {
+    transform: scale(0);
   }
-  
-  @keyframes newTile {
-    from {
-      transform: scale(0);
-    }
-  
-    to {
-      transform: scale(1);
-    }
+
+  to {
+    transform: scale(1);
+  }
+}
+@keyframes mergedTile {
+  from {
+    transform: scale(1.1);
+  }
+
+  to {
+    transform: scale(1);
+  }
 }
