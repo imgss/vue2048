@@ -2,7 +2,7 @@
 <div 
 class='tile' 
 :class="{'new': typeof tile === 'string', 'merged': merged}" 
-:style="{backgroundColor: colormap[tile] , color: tile>4 ? '#f9f6f2' : '#333'}" >
+:style="style" >
 {{tile ? tile : ''}}
 </div>
 </template>
@@ -30,6 +30,15 @@ export default {
         }
     },
     props: ['tile'],
+    computed:{
+        style(){
+            return {
+                backgroundColor: this.colormap[this.tile] , 
+                color: this.tile>4 ? '#f9f6f2' : '#333',
+                fontSize: this.tile>1000 ? '36px' : '48px'
+            }
+        }
+    },
     watch: {
         tile(now, prev){
             if(now && prev && now !== prev){
