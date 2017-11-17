@@ -18,9 +18,9 @@
 
 ### todo
 
-1. 增加动画过渡
+1. 增加动画过渡 [x]
 
-2. localstorge记录最高分
+2. localstorge记录最高分 [x]
 
 3. 重新开始，gameover的弹出层
 
