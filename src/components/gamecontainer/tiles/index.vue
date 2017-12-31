@@ -48,6 +48,7 @@ export default {
         document.addEventListener('keydown', function(e) {
             var directioncode = self.map[e.which];
             self.move(directioncode);
+            
         })
 
     },
@@ -58,7 +59,6 @@ export default {
             setTimeout(that.$forceUpdate, 2000);
             this.moved = false;
         }
-
     },
 
     methods: {
@@ -75,6 +75,7 @@ export default {
         move(directionCode) {
             var newTiles = [];
             var newColumnTiles = [];
+            let moved = false;
             switch (directionCode) {
                 case 3: //move left
                     {
@@ -136,12 +137,20 @@ export default {
                 for (let y = 0; y < 4; y++) {
                     if (newTiles[x][y] != this.tiles[x][y]) {
                         this.moved = true; //方块移动了
+                        moved = true
                     }
                 }
             }
-            this.oldTiles = this.tiles;
-            this.tiles = newTiles;
-            newTiles = [];
+            if(this.moved){
+                this.oldTiles = this.tiles;
+                this.tiles = newTiles;
+                newTiles = [];
+            } else {
+                console.log('检测是否挂了');
+                this.checkGameOver()
+            }
+
+            return moved;
         },
         moveAndMerge(list, reverse = false) {
 
@@ -179,9 +188,36 @@ export default {
             }
             return nList;
         },
+        checkGameOver(){
+            // 检测行合并
+            let over = true;
+            for(let i = 0; i < 4; i++){
+                this.tiles[i].reduce(
+                    (prev, curr) => {
+                    if(prev == curr){
+                        over = false;
+                        console.log('没挂')
+                    }
+                })
+            }
+            if(!over){
+                return;
+            }
+            // 检测列合并
+            for(let i = 0; i < 4; i++){
+                for(let j = 1; j < 4; j++){
+                    if(this.tiles[i][j] == this.tiles[i][j-1]){
+                        over = false;
+                        console.log('没挂')
+                    }
+                }
+            }
+            this.over = over;
+            console.log('挂了')
+        },
         generateNewTile() { //生成新数字
             var row, column;
-
+            console.log("generateNewTile")
             function haveSpace(tiles) {
                 return tiles.some(function(row) {
                     return row.some(function(tile) {
@@ -197,7 +233,7 @@ export default {
                 while (this.tiles[row][column] !== null);
                 this.tiles[row][column] = Math.random() > 0.5 ? '2' : '4';//添加string
             } else {
-                this.over = true;
+                this.checkGameOver()
             }
         }
     },
